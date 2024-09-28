@@ -3,6 +3,7 @@ import StudentList from '@/views/StudentList.vue';
 import AddNewStudent from '@/views/AddNewStudent.vue';
 import NotFound from '@/views/NotFound.vue';
 import ShowStudent from '@/views/ShowStudent.vue';
+import EditStudent from '@/views/EditStudent.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +19,10 @@ const router = createRouter({
     {
       path: '/student/:id',
       component: ShowStudent
+    },
+    {
+      path: '/student/edit/:id',
+      component: EditStudent
     },
     {
       path: '/not-found',

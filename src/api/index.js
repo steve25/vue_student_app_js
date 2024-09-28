@@ -27,3 +27,18 @@ export const addStudent = async (student) => {
     return error;
   }
 };
+
+export const updateStudent = async (student) => {
+  try {
+    return await api.put(`/students`, student);
+  } catch (error) {
+    return error;
+  }
+};
+export const removeStudent = async (id) => {
+  try {
+    return await api.delete(`/students/${id}`);
+  } catch (error) {
+    return error;
+  }
+};

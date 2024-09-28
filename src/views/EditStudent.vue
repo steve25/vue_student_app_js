@@ -1,23 +1,30 @@
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { addStudent } from '@/api';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { getStudent, updateStudent } from '@/api';
 
 import TheButton from '@/components/TheButton.vue';
 
+const route = useRoute();
 const router = useRouter();
 
-const nameInput = ref('');
-const emailInput = ref('');
+const id = route.params.id;
+
+const student = ref({});
 const errors = ref([]);
 
-const addStudentForm = async () => {
-  const newStudent = {
-    name: nameInput.value,
-    email: emailInput.value
-  };
+onMounted(async () => {
+  const response = await getStudent(id);
 
-  const response = await addStudent(newStudent);
+  if (response.status !== 200) {
+    await router.push({ path: '/not-found' });
+    router.go(0);
+  }
+  student.value = response.data;
+});
+
+const editStudentForm = async () => {
+  const response = await updateStudent(student.value);
 
   if (response.status !== 200) {
     errors.value = response.response.data.errors;
@@ -34,11 +41,11 @@ const addStudentForm = async () => {
   <form class="student-form">
     <div class="form-row">
       <label for="student-name">Name:</label>
-      <input type="text" id="student-name" v-model="nameInput" />
+      <input type="text" id="student-name" v-model="student.name" />
     </div>
     <div class="form-row">
       <label for="student-email">Email:</label>
-      <input type="text" id="student-email" v-model="emailInput" />
+      <input type="text" id="student-email" v-model="student.email" />
     </div>
 
     <div class="errors" v-if="errors.length > 0">
@@ -50,7 +57,7 @@ const addStudentForm = async () => {
     </div>
 
     <div class="button-container">
-      <TheButton type="button" color="brown" @click.prevent="addStudentForm">Save</TheButton>
+      <TheButton type="button" color="brown" @click.prevent="editStudentForm">Save</TheButton>
       <TheButton type="link" to="/">Cancel</TheButton>
     </div>
   </form>

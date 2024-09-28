@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getStudents, getStudent } from '@/api';
+import { getStudents, removeStudent } from '@/api';
 
 import TheButton from '@/components/TheButton.vue';
 
@@ -10,11 +10,14 @@ onMounted(async () => {
   students.value = await getStudents();
 });
 
-const deleteStudent = (id) => {
-  const index = students.value.findIndex((s) => s.id === id);
+const deleteStudent = async (id) => {
+  const response = await removeStudent(id);
 
-  if (index > -1) {
-    students.value.splice(index, 1);
+  if (response.status !== 200) {
+    console.log('cant remove');
+  } else {
+    console.log('ok');
+    students.value = await getStudents();
   }
 };
 </script>
@@ -36,12 +39,16 @@ const deleteStudent = (id) => {
       <tbody>
         <tr v-for="(student, index) in students" :key="student.id">
           <td>{{ index + 1 }}</td>
-          <td>{{ student.name }}</td>
+          <td>
+            <RouterLink :to="'/student/' + student.id">{{ student.name }}</RouterLink>
+          </td>
           <td>
             <a :href="`mailto:${student.email}`">{{ student.email }}</a>
           </td>
           <td class="action-buttons">
-            <TheButton type="link" color="green" :to="'/student/' + student.id">Edit</TheButton>
+            <TheButton type="link" color="green" :to="'/student/edit/' + student.id"
+              >Edit</TheButton
+            >
             <TheButton type="button" color="red" @click="deleteStudent(student.id)">
               Delete
             </TheButton>
@@ -92,7 +99,7 @@ table td > a:hover {
 }
 
 table tr > th:first-child,
-table tr > td:first-child:last-child {
+table tr > td:first-child {
   text-align: right;
 }
 
