@@ -1,26 +1,22 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-import { getStudents, getStudent } from '@/api'
+import { onMounted, ref } from 'vue';
+import { getStudents, getStudent } from '@/api';
 
-import TheButton from '@/components/TheButton.vue'
+import TheButton from '@/components/TheButton.vue';
 
-const students = ref([])
+const students = ref([]);
 
 onMounted(async () => {
-  students.value = await getStudents()
-})
-
-const showStudent = async (id) => {
-  console.log(await getStudent(id))
-}
+  students.value = await getStudents();
+});
 
 const deleteStudent = (id) => {
-  const index = students.value.findIndex((s) => s.id === id)
+  const index = students.value.findIndex((s) => s.id === id);
 
   if (index > -1) {
-    students.value.splice(index, 1)
+    students.value.splice(index, 1);
   }
-}
+};
 </script>
 
 <template>
@@ -45,7 +41,7 @@ const deleteStudent = (id) => {
             <a :href="`mailto:${student.email}`">{{ student.email }}</a>
           </td>
           <td class="action-buttons">
-            <TheButton type="link" color="green" :to="`student/${student.id}`">Edit</TheButton>
+            <TheButton type="link" color="green" :to="'/student/' + student.id">Edit</TheButton>
             <TheButton type="button" color="red" @click="deleteStudent(student.id)">
               Delete
             </TheButton>
@@ -65,7 +61,6 @@ section {
   margin-bottom: 1rem;
 }
 
-/* Tables */
 table {
   width: 100%;
   background-color: #fefae0;
