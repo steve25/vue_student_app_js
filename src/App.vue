@@ -1,6 +1,6 @@
 <script setup>
-import TheFooter from './components/TheFooter.vue'
-import TheHeader from './components/TheHeader.vue'
+import TheFooter from './components/TheFooter.vue';
+import TheHeader from './components/TheHeader.vue';
 </script>
 
 <template>
@@ -20,7 +20,8 @@ import TheHeader from './components/TheHeader.vue'
 }
 
 body {
-  margin: 0 0 2rem;
+  min-width: 850px;
+  margin: 0 auto;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 1.1rem;
   text-align: center;
