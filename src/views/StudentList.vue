@@ -5,9 +5,16 @@ import { getStudents, removeStudent } from '@/api';
 import TheButton from '@/components/TheButton.vue';
 
 const students = ref([]);
+const error = ref(null);
 
 onMounted(async () => {
-  students.value = await getStudents();
+  const response = await getStudents();
+
+  if (response.status !== 200) {
+    error.value = 'Internal database error.';
+  } else {
+    students.value = response.data;
+  }
 });
 
 const deleteStudent = async (id) => {
@@ -17,7 +24,7 @@ const deleteStudent = async (id) => {
     console.log('cant remove');
   } else {
     console.log('ok');
-    students.value = await getStudents();
+    students.value = response;
   }
 };
 </script>
@@ -27,7 +34,12 @@ const deleteStudent = async (id) => {
     <TheButton type="link" color="blue" to="/add">Add new student</TheButton>
   </nav>
   <section>
-    <table>
+    <div class="error-box" v-if="error != null">
+      <p>
+        {{ error }}
+      </p>
+    </div>
+    <table v-else>
       <thead>
         <tr>
           <th>#</th>
@@ -68,6 +80,16 @@ section {
   margin-bottom: 1rem;
 }
 
+.error-box {
+  width: fit-content;
+  margin: 2rem auto;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid red;
+  border-radius: 0.4rem;
+  background-color: #ff00002a;
+  color: red;
+}
+
 table {
   width: 100%;
   background-color: #fefae0;
@@ -75,17 +97,18 @@ table {
   border-collapse: collapse;
   border-style: hidden;
   border-spacing: 0;
-  box-shadow: 0 0 0 1px #d4a373;
+  box-shadow: 0 0 0 1px #ccd5ae;
   color: #73512e;
+  overflow: hidden;
 }
 
 tr {
-  border-bottom: 1px solid #d4a373;
+  border-bottom: 1px solid #ccd5ae;
 }
 
 td,
 th {
-  border-left: 1px solid #d4a373;
+  border-left: 1px solid #ccd5ae;
 }
 
 table td > a {
@@ -113,8 +136,6 @@ table td {
   text-align: left;
 }
 
-/* We shade every second (even) row of the table */
-/* We use tbody to make sure we are not shading the header - this preserves the order of the shading */
 table tbody > tr:nth-child(odd) {
   background: #faedcd;
 }
@@ -124,7 +145,4 @@ table tbody > tr:nth-child(odd) {
   gap: 1.5rem;
   justify-content: center;
 }
-
-/* Buttons */
-/*  */
 </style>

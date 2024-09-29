@@ -7,9 +7,11 @@ const api = axios.create({
 });
 
 export const getStudents = async () => {
-  const { data } = await api.get('/students');
-
-  return data;
+  try {
+    return await api.get('/students');
+  } catch (error) {
+    return error;
+  }
 };
 
 export const getStudent = async (id) => {

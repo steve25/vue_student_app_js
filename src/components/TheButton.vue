@@ -9,16 +9,16 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-const { type, color, to } = defineProps(['type', 'color', 'to'])
+import { computed } from 'vue';
+const { type, color, to } = defineProps(['type', 'color', 'to']);
 
 const buttonColor = computed(() => {
   if (color) {
-    return 'button-' + color
+    return 'button-' + color;
   }
 
-  return ''
-})
+  return '';
+});
 </script>
 
 <style scoped>

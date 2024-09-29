@@ -27,6 +27,10 @@ const router = createRouter({
     {
       path: '/not-found',
       component: NotFound
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: '/not-found'
     }
   ]
 });
