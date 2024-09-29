@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  // baseURL: 'https://vue-student-app-api.onrender.com/api',
-  baseURL: 'http://127.0.0.1:8080/api',
+  baseURL: 'https://vue-student-app-api.onrender.com/api',
+  // baseURL: 'http://127.0.0.1:8080/api',
   timeout: 1000
 });
 
