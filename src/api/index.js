@@ -6,7 +6,7 @@ const api = axios.create({
   timeout: 1000
 });
 
-export const getStudents = async () => {
+const getStudents = async () => {
   try {
     return await api.get('/students');
   } catch (error) {
@@ -14,7 +14,7 @@ export const getStudents = async () => {
   }
 };
 
-export const getStudent = async (id) => {
+const getStudent = async (id) => {
   try {
     return await api.get(`/students/${id}`);
   } catch (error) {
@@ -22,7 +22,7 @@ export const getStudent = async (id) => {
   }
 };
 
-export const addStudent = async (student) => {
+const addStudent = async (student) => {
   try {
     return await api.post(`/students`, student);
   } catch (error) {
@@ -30,17 +30,19 @@ export const addStudent = async (student) => {
   }
 };
 
-export const updateStudent = async (student) => {
+const updateStudent = async (student) => {
   try {
     return await api.put(`/students`, student);
   } catch (error) {
     return error;
   }
 };
-export const removeStudent = async (id) => {
+const removeStudent = async (id) => {
   try {
     return await api.delete(`/students/${id}`);
   } catch (error) {
     return error;
   }
 };
+
+export { getStudents, getStudent, addStudent, updateStudent, removeStudent };
