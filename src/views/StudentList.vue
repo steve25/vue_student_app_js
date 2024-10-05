@@ -2,29 +2,39 @@
 import { onMounted, ref } from 'vue';
 import { getStudents, removeStudent } from '@/api';
 
-import TheButton from '@/components/TheButton.vue';
+import TheButton from '../components/TheButton.vue';
 
 const students = ref([]);
 const error = ref(null);
+const isLoaded = ref(false);
 
 onMounted(async () => {
+  loadStudents();
+});
+
+const loadStudents = async () => {
   const response = await getStudents();
+  isLoaded.value = false;
 
   if (response.status !== 200) {
     error.value = 'Internal database error.';
   } else {
     students.value = response.data;
   }
-});
+
+  isLoaded.value = true;
+};
 
 const deleteStudent = async (id) => {
   const response = await removeStudent(id);
+
+  console.log(response);
 
   if (response.status !== 200) {
     console.log('cant remove');
   } else {
     console.log('ok');
-    students.value = response;
+    loadStudents();
   }
 };
 </script>
@@ -33,7 +43,7 @@ const deleteStudent = async (id) => {
   <nav class="add-button">
     <TheButton type="link" color="blue" to="/add">Add new student</TheButton>
   </nav>
-  <section>
+  <section v-if="isLoaded">
     <div class="error-box" v-if="error != null">
       <p>
         {{ error }}
