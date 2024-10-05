@@ -13,13 +13,15 @@ onMounted(async () => {
 });
 
 const loadStudents = async () => {
-  const response = await getStudents();
   isLoaded.value = false;
+  const response = await getStudents();
 
   if (response.status !== 200) {
     error.value = 'Internal database error.';
   } else {
-    students.value = response.data;
+    students.value = response.data.sort((a, b) => {
+      return a.id - b.id;
+    });
   }
 
   isLoaded.value = true;
